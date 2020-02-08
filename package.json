@@ -1,0 +1,19 @@
+{
+  "name": "stackcklone",
+  "version": "1.0.0",
+  "description": "My cool Nuxt.js project",
+  "author": "",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "nuxt": "^2.0.0",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-vue": "^0.8.1"
+  },
+  "devDependencies": {}
+}
