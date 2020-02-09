@@ -13,12 +13,13 @@
           :options="searchResults"
         />
       </div>
-      <a class="ui item" v-if="!isLoggedIn" @click="singin">
+      <nuxt-link to="/login" class="ui item" v-if="!isLoggedIn" >
         Sign in
-      </a>
-      <a class="ui item" v-if="!isLoggedIn">
+      </nuxt-link>
+      <nuxt-link to="/register" class="ui item" v-if="!isLoggedIn">
         Sign up
-      </a>
+      </nuxt-link>
+      <nuxt-link :to="'/user/' + user.id" class="ui item" v-if="isLoggedIn">{{user.nickname}}</nuxt-link>
       <a class="ui item" v-if="isLoggedIn" @click="logout">
         Logout
       </a>
@@ -37,14 +38,17 @@
     computed: {
         isLoggedIn: function () {
           return this.$store.state.user.isLoggedIn;
-        }
+        },
+      user: function () {
+        return this.$store.state.user.user;
+      }
     },
     methods: {
       getSearchResults(val) {
         this.$data.searchResults = [{ key: '1', value: '1', text: 'Test1' },{ key: '2', value: '2', text: 'Test2' }];
       },
       singin() {
-        this.$store.commit('user/signin');
+        this.$store.dispatch('user/signin');
       },
       logout() {
         this.$store.commit('user/logout');

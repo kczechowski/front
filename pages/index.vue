@@ -3,7 +3,8 @@
 <!--    <div>-->
 <!--      <logo />-->
     <navbar></navbar>
-    <div class="ui container grid">
+    <NotLoggedIn v-if="!isLoggedIn"></NotLoggedIn>
+    <div class="ui container grid" v-if="isLoggedIn">
       <div class="ui twelve wide column" style="border: 1px solid black">
         <div class="ui grid container">
           <div class="left floated six wide column">
@@ -15,7 +16,7 @@
             </nuxt-link>
           </div>
         </div>
-        <feed></feed>
+        <feed v-if="isLoggedIn"></feed>
 <!--        <div class="ui items">-->
 <!--          <div class="item">-->
 <!--            <div class="ui small vertical statistic">-->
@@ -57,13 +58,20 @@
 import Logo from '~/components/Logo.vue'
 import Navbar from '~/components/Navbar.vue';
 import Feed from "../components/Feed.vue";
+import NotLoggedIn from "../components/NotLoggedIn";
 
 export default {
   components: {
     Logo,
     Navbar,
-    Feed
-  }
+    Feed,
+    NotLoggedIn
+  },
+  computed: {
+    isLoggedIn: function () {
+      return this.$store.state.user.isLoggedIn;
+    },
+  },
 }
 </script>
 

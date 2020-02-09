@@ -3,7 +3,7 @@
       <nuxt-link :to="'questions/' + question.id" class="item" v-for="question in questions">
         <div class="ui small vertical statistic">
           <div class="value">
-            2,204
+<!--            {{questions.answers.length}}-->
           </div>
           <div class="label">
             Answers
@@ -13,10 +13,10 @@
           <div class="header">{{question.title}}</div>
           <div class="meta">
             <span class="">{{question.user.nickname}}</span>
-            <span class="">2020-02-22 00:00:00</span>
+            <span class="">{{question.createdAt}}</span>
           </div>
           <div class="description">
-            <p></p>
+            <p>{{question.content}}</p>
           </div>
         </div>
         <div class="ui divider"></div>
@@ -32,10 +32,16 @@
     data() {
       return {
         page: 1,
-        questions: [{id: 1,title: 'ddddd d d d ddd d', content: 'sdfsd dfs fds fsd fsd fsd fds fsd fsd fsd fsd fs fy jdyf  hdrt hd', user: {id: 1, nickname: 'dsddd'}}, {id: 2,title: 'ddddd d d d ddd d', content: 'sdfsd dfs fds fsd fsd fsd fds fsd fsd fsd fsd fs fy jdyf  hdrt hd', user: {id: 1, nickname: 'dsddd'}}]
       }
     },
-    computed: {},
-    methods: {}
+    computed: {
+      questions: function () {
+        return this.$store.state.question.questions;
+      }
+    },
+    methods: {},
+    beforeCreate() {
+      this.$store.dispatch('question/getQuestions');
+    }
   }
 </script>

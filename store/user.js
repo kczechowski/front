@@ -1,12 +1,49 @@
+import api from "../api/api";
+
 export const state = () => ({
-  isLoggedIn: false
+  isLoggedIn: false,
+  hasFailedLogin: false,
+  user: null,
 })
 
 export const mutations = {
-  signin(state, login, password) {
-    state.isLoggedIn = true;
-  },
   logout(state) {
     state.isLoggedIn = false;
+    state.hasFailedLogin = false;
+  },
+  failLogin(state) {
+    state.isLoggedIn = false;
+    state.hasFailedLogin = true;
+  },
+  loginOK(state, args) {
+    state.isLoggedIn = true;
+    state.hasFailedLogin = false;
+
+    const {id, nickname, email, roles} = args;
+
+    state.user = {id, nickname, email, roles}
+  }
+}
+
+export const actions = {
+  async signin(context, args) {
+
+    const {login, password} = args;
+
+    return api.login(login, password).then(json => {
+      context.commit('loginOK', json);
+    }).catch(e => {
+      context.commit('failLogin');
+    });
+  },
+  async signup(context, args) {
+
+    const {login, password, email} = args;
+
+    return api.login(login, password).then(json => {
+      context.commit('loginOK', json);
+    }).catch(e => {
+      context.commit('failLogin');
+    });
   }
 }
