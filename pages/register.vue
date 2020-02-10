@@ -48,7 +48,7 @@
       };
     },
     methods: {
-      async login(e) {
+      async register(e) {
         e.preventDefault();
         await this.$store.dispatch('user/signup', {
           email: this.$data.email,

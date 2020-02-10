@@ -13,7 +13,7 @@ export default {
     });
   },
   register: function (email, user, pass) {
-    return fetch(this.url + '/users', {
+    return fetch(this.url + '/register', {
       method: 'POST',
       credentials: 'include',
       headers: {

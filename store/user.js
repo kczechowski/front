@@ -5,6 +5,7 @@ export const state = () => ({
   hasFailedLogin: false,
   user: null,
   foundUser: null,
+  hasFailedRegister: false,
 })
 
 export const mutations = {
@@ -26,6 +27,12 @@ export const mutations = {
     const {id, nickname, email, roles} = args;
 
     state.user = {id, nickname, email, roles}
+  },
+  registerOK(state, args) {
+    state.hasFailedRegister = false;
+  },
+  registerFail(state, args) {
+    state.hasFailedRegister = true;
   }
 }
 
@@ -44,11 +51,7 @@ export const actions = {
 
     const {login, password, email} = args;
 
-    return api.login(login, password).then(json => {
-      context.commit('loginOK', json);
-    }).catch(e => {
-      context.commit('failLogin');
-    });
+    return api.register(email, login, password).then(json => {context.commit('registerOK')}).catch(e => {context.commit('registerFail')});
   },
   async getUser(context, args) {
     const {id} = args;
