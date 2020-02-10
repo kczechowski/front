@@ -3,7 +3,7 @@
       <nuxt-link :to="'questions/' + question.id" class="item" v-for="question in questions">
         <div class="ui small vertical statistic">
           <div class="value">
-<!--            {{questions.answers.length}}-->
+            {{question.answers.length}}
           </div>
           <div class="label">
             Answers
@@ -22,7 +22,7 @@
         <div class="ui divider"></div>
       </nuxt-link>
 
-      <button class="ui button">Load more</button>
+      <button class="ui button" @click="getMoreQuestions">Load more</button>
     </div>
 
 </template>
@@ -31,17 +31,27 @@
   export default {
     data() {
       return {
-        page: 1,
+        page: 0,
       }
     },
     computed: {
       questions: function () {
         return this.$store.state.question.questions;
+      },
+    },
+    methods: {
+      getMoreQuestions: function () {
+        if (this.$store.state.question.hasMore ) {
+          this.$data.page += 1;
+          this.$store.dispatch('question/getQuestions', {page: this.$data.page})
+        }
       }
     },
-    methods: {},
     beforeCreate() {
-      this.$store.dispatch('question/getQuestions');
+      if(!this.$store.state.question.questions.length) {
+        this.$store.dispatch('question/getQuestions', {page: 0});
+      }
+      console.log(this.$store.state.question.questions);
     }
   }
 </script>

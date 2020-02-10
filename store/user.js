@@ -4,6 +4,7 @@ export const state = () => ({
   isLoggedIn: false,
   hasFailedLogin: false,
   user: null,
+  foundUser: null,
 })
 
 export const mutations = {
@@ -14,6 +15,9 @@ export const mutations = {
   failLogin(state) {
     state.isLoggedIn = false;
     state.hasFailedLogin = true;
+  },
+  userFound(state, args) {
+    state.foundUser = args;
   },
   loginOK(state, args) {
     state.isLoggedIn = true;
@@ -45,5 +49,15 @@ export const actions = {
     }).catch(e => {
       context.commit('failLogin');
     });
+  },
+  async getUser(context, args) {
+    const {id} = args;
+
+    return new Promise((async (resolve, reject) => {
+      let user = await api.getUser(id);
+      user.questions = await api.getQuestions({user_id: id});
+      resolve(context.commit('userFound', user));
+    }));
+
   }
 }

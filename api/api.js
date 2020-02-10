@@ -60,23 +60,11 @@ export default {
     });
 
   },
-  getQuestions: function (page = 1, filters = []) {
+  getQuestions: function (filters = {}) {
 
-    return fetch(this.url + '/questions/', {
-      method: 'GET',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    }).then(res => {
-      if (!res.ok) throw new Error();
-      return res.json()
-    });
+    const searchParams = new URLSearchParams(filters);
 
-  },
-  searchQuestions: function (phrase) {
-
-    return fetch(this.url + '/questions/search?phrase=' + phrase, {
+    return fetch(this.url + '/questions/?' + searchParams.toString(), {
       method: 'GET',
       credentials: 'include',
       headers: {
@@ -98,25 +86,39 @@ export default {
       },
     }).then(res => {
       if (!res.ok) throw new Error();
-      return res.json()
+      return res;
     });
 
   },
 
-  answerQuestion: function (id) {
+  answerQuestion: function (id, content) {
 
-    return fetch(this.url + '/questions/answers/', {
+    return fetch(this.url + `/questions/${id}/answers`, {
       method: 'POST',
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: ""
+      body: JSON.stringify({content})
     }).then(res => {
       if (!res.ok) throw new Error();
       return res.json()
     });
 
   },
+
+  getUser: function (id) {
+    return fetch(this.url + `/users/${id}`, {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    }).then(res => {
+      if (!res.ok) throw new Error();
+      return res.json()
+    });
+  },
+
 
 }

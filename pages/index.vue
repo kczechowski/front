@@ -5,7 +5,35 @@
     <navbar></navbar>
     <NotLoggedIn v-if="!isLoggedIn"></NotLoggedIn>
     <div class="ui container grid" v-if="isLoggedIn">
-      <div class="ui twelve wide column" style="border: 1px solid black">
+      <div class="ui twelve wide column" >
+        <div class="ui grid container" v-if="searchResults.length">
+          <div class="left floated six wide column">
+            <h1 class="header">Search results</h1>
+            <div class="ui items" >
+              <nuxt-link :to="'questions/' + question.id" class="item" v-for="question in searchResults">
+                <div class="ui small vertical statistic">
+                  <div class="value">
+                    {{question.answers.length}}
+                  </div>
+                  <div class="label">
+                    Answers
+                  </div>
+                </div>
+                <div class="content" style="margin-left: 2rem;">
+                  <div class="header">{{question.title}}</div>
+                  <div class="meta">
+                    <span class="">{{question.user.nickname}}</span>
+                    <span class="">{{question.createdAt}}</span>
+                  </div>
+                  <div class="description">
+                    <p>{{question.content}}</p>
+                  </div>
+                </div>
+                <div class="ui divider"></div>
+              </nuxt-link>
+            </div>
+          </div>
+        </div>
         <div class="ui grid container">
           <div class="left floated six wide column">
             <h1 class="header">All questions</h1>
@@ -45,8 +73,7 @@
 
 
 
-      <div class="ui four wide column" style="border: 1px solid black;">
-        sss
+      <div class="ui four wide column" >
       </div>
     </div>
 <!--    <nuxt-link to="/questions/1">question</nuxt-link>-->
@@ -71,6 +98,9 @@ export default {
     isLoggedIn: function () {
       return this.$store.state.user.isLoggedIn;
     },
+    searchResults: function () {
+      return this.$store.state.question.searchResults;
+    }
   },
 }
 </script>
